@@ -42,6 +42,13 @@ class MenuItemDetailViewController: UIViewController {
         nameLabel.text = menultem.name
        pricelabel.text = menultem.price.formatted(.currency(code: "USD"))
         detailTextLabel.text = menultem.detailText
+       
+       Task.init{
+           if let image = try? await
+                MenuController.shared.fetchImage(from: menultem.imageURL) {
+                   imageView.image = image
+           }
+       }
     }
     
     
