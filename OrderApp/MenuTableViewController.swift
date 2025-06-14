@@ -12,6 +12,8 @@ class MenuTableViewController: UITableViewController {
    
     var menuItems = [MenuItem]()
     
+    var imageLoadTasks: [IndexPath: Task<Void, Never>] = [:]
+    
     init?(coder: NSCoder , category: String){
         self.category = category
         super.init(coder: coder)
@@ -36,6 +38,10 @@ class MenuTableViewController: UITableViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        imageLoadTasks.forEach { key , value in value.cancel() }
+    }
     
     func updateUI(with menuItems: [MenuItem]) {
         self.menuItems = menuItems
@@ -80,15 +86,55 @@ class MenuTableViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        imageLoadTasks[indexPath]?.cancel()
+        
+     
+    }
+    
    
     func configure( _ cell: UITableViewCell , forItemAt indexPath: IndexPath){
+        guard let cell = cell as? MenuItemCell else { return }
         let menuItem = menuItems[indexPath.row]
-        var content = cell.defaultContentConfiguration()
-        content.text = menuItem.name
-        content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
-        cell.contentConfiguration = content
+//        var content = cell.defaultContentConfiguration()
+//        content.text = menuItem.name
+//        content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
+//        content.image = UIImage(systemName: "photo.on.rectangle")
+//        cell.contentConfiguration = content
+//        Task.init {
+//            if let image = try? await
+//                MenuController.shared.fetchImage(from: menuItem.imageURL) {
+//                //Image was returned
+//                if let currentIndexPath = self.tableView.indexPath(for: cell), currentIndexPath == indexPath {
+//                    var content = cell.defaultContentConfiguration ()
+//                    content.text = menuItem.name
+//                    content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
+//                content.image = image
+//                cell.contentConfiguration = content
+//            }
+//            }
+//        }
+        cell.itemName = menuItem.name
+        cell.price = menuItem.price
+        cell.image = nil
         
+        imageLoadTasks[indexPath] = Task.init {
+            if let image = try? await MenuController.shared.fetchImage(from: menuItem.imageURL) {
+                if let currentIndexPath = self.tableView.indexPath(for: cell), currentIndexPath == indexPath {
+//                    var content = cell.defaultContentConfiguration ()
+//                    content.text = menuItem.name
+//                    content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
+//                    content.image = image
+                    cell.image = image
+                   // cell.contentConfiguration = content
+                }
+            }
+            imageLoadTasks[indexPath] = nil
+        }
     }
+    
+   
+ 
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

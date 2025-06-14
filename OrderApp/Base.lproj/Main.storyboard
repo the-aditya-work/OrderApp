@@ -58,7 +58,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="MenuItem" textLabel="fxT-xj-wAf" detailTextLabel="LP3-1h-Kk2" style="IBUITableViewCellStyleValue1" id="ePV-K0-gXe">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="MenuItem" textLabel="fxT-xj-wAf" detailTextLabel="LP3-1h-Kk2" style="IBUITableViewCellStyleValue1" id="ePV-K0-gXe" customClass="MenuItemCell" customModule="OrderApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ePV-K0-gXe" id="MHZ-vq-4QC">
@@ -82,7 +82,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="lMn-cn-w9T" kind="show" destinationCreationSelector="showMenuItem:sender:" id="eI6-wr-Kfd"/>
+                                    <segue destination="lMn-cn-w9T" kind="show" identifier="" destinationCreationSelector="showMenuItem:sender:" id="eI6-wr-Kfd"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -214,11 +214,68 @@
                             <outlet property="delegate" destination="FfC-PF-Hue" id="Ftg-DV-UTT"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="SBh-dH-fOR"/>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="SBh-dH-fOR">
+                        <barButtonItem key="rightBarButtonItem" title="Submit" id="G1D-OT-lY9">
+                            <connections>
+                                <action selector="submitTapped:" destination="FfC-PF-Hue" id="jbr-g1-B8d"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <segue destination="mbZ-1S-3Gz" kind="presentation" identifier="confirmOrder" destinationCreationSelector="confirmOrder:" id="vkB-sK-Pa8"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BMf-cN-FnF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1866.4122137404579" y="183.80281690140845"/>
+        </scene>
+        <!--Order Confirmation View Controller-->
+        <scene sceneID="BLU-ac-M7s">
+            <objects>
+                <viewController id="mbZ-1S-3Gz" customClass="OrderConfirmationViewController" customModule="OrderApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fNN-Td-SER">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="783"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="rrf-cs-K3Q">
+                                <rect key="frame" x="15" y="360.33333333333331" width="363" height="62.666666666666686"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zzK-uF-bmV">
+                                        <rect key="frame" x="161" y="0.0" width="41.333333333333343" height="20.333333333333332"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CWz-8T-rEK">
+                                        <rect key="frame" x="140" y="28.333333333333375" width="83.333333333333314" height="34.333333333333343"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Dismiss"/>
+                                        <connections>
+                                            <segue destination="KpN-KP-DPb" kind="unwind" unwindAction="unwindToOrderListWithSegue:" id="Ulx-y8-FRK"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="CWz-8T-rEK" firstAttribute="centerX" secondItem="rrf-cs-K3Q" secondAttribute="centerX" id="nq8-qj-Hdm"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ZXO-4x-HAa"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="rrf-cs-K3Q" firstAttribute="leading" secondItem="ZXO-4x-HAa" secondAttribute="leading" constant="15" id="Whs-VE-qLF"/>
+                            <constraint firstItem="ZXO-4x-HAa" firstAttribute="trailing" secondItem="rrf-cs-K3Q" secondAttribute="trailing" constant="15" id="hj1-LI-TeA"/>
+                            <constraint firstItem="rrf-cs-K3Q" firstAttribute="centerY" secondItem="fNN-Td-SER" secondAttribute="centerY" id="p9a-dK-2tl"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="confirmationlabel" destination="zzK-uF-bmV" id="Kvh-Pl-wBe"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="my5-Mv-cUM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="KpN-KP-DPb" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="2848" y="192"/>
         </scene>
         <!--Your Order-->
         <scene sceneID="V63-T5-bpt">
