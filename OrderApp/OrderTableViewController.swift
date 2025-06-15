@@ -26,6 +26,10 @@ class OrderTableViewController: UITableViewController {
         return OrderConfirmationViewController(coder: coder, minutesToPrepare: minutesToPrepareOrder)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        MenuController.shared.updateUserActivity(with: .order)
+    }
 
     // MARK: - Table view data source
 

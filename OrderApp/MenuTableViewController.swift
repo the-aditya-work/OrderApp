@@ -63,6 +63,10 @@ class MenuTableViewController: UITableViewController {
         return MenuItemDetailViewController(coder: coder, menuItem: menuItem)
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        MenuController.shared.updateUserActivity(with: .menu(category: category))
+    }
     
     // MARK: - Table view data source
 
