@@ -20,6 +20,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             orderTabBarItem.badgeValue = String(count)
         }
     }
+    
+    func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
+        return MenuController.shared.userActivity
+    }
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -28,8 +32,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let _ = (scene as? UIWindowScene) else { return }
         NotificationCenter.default.addObserver(self, selector: #selector(updateOrderbadge), name: MenuController.orderUpdatedNotification, object: nil)
         orderTabBarItem = (window?.rootViewController as? UITabBarController)?.viewControllers?[1].tabBarItem
+        
     }
-
+ 
+    func scene(_ scene: UIScene, restoreInteractionStateWith stateRestorationActivity: NSUserActivity) {
+        if let restoredOrder = stateRestorationActivity.order {
+            MenuController.shared.order = restoredOrder
+        }
+    }
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.

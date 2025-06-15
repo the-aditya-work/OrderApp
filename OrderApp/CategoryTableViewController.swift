@@ -24,6 +24,11 @@ class CategoryTableViewController: UITableViewController {
             }
         }
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        MenuController.shared.updateUserActivity(with: .categories)
+    }
 
     // MARK: - Table view data source
     

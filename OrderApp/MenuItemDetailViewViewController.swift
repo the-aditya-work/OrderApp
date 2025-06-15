@@ -61,5 +61,10 @@ class MenuItemDetailViewController: UIViewController {
     
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        MenuController.shared.updateUserActivity(with: .menuItemDetail(menultem))
+    }
+    
     
 }

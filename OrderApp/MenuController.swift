@@ -15,6 +15,7 @@ class MenuController {
     var order = Order() {
         didSet {
             NotificationCenter.default.post(name: MenuController.orderUpdatedNotification, object: nil)
+            userActivity.order = order
         }
     }
     
@@ -92,4 +93,17 @@ class MenuController {
         }
         return image
     }
+    
+    var userActivity = NSUserActivity(activityType: "com.example.OrderApp.order")
+    
+    func updateUserActivity(with controller: StateRestorationController) {
+        switch controller {
+        case .menu(let category) : userActivity.menuCategory = category
+        case .menuItemDetail(let menuItem) : userActivity.menuItem = menuItem
+        case .order, .categories:
+            break
+        }
+        userActivity.controllerIdentifier = controller.identifier
+    }
+    
 }
